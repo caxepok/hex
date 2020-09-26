@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using hex.api.Repositories;
@@ -9,9 +10,10 @@ using hex.api.Repositories;
 namespace hex.api.Migrations
 {
     [DbContext(typeof(HexDBContext))]
-    partial class HexDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200926183853_Patch4")]
+    partial class Patch4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

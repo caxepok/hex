@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "ПАК Логист";
+}
+
+<div class="text-center">
+    <table class="table table-striped table-hover border-bottom">
+        <thead>
+            <tr>
+                <th class="d-none d-lg-table-cell">
+                    Номер контейнера
+                </th>
+                <th>
+                    Текущее местоположение
+                </th>
+                <th>
+                    Тип контейнера
+                </th>
+                <th class="d-none d-md-table-cell text-center">
+                    Вес
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                IEnumerable<hex.api.Models.ContainerPlace> places = (ViewBag.ContainerPlaces as IEnumerable<hex.api.Models.ContainerPlace>);
+            }
+            @foreach (Container container in ViewBag.Containers)
+            {
+                var place = places.SingleOrDefault(_ => _.ContainerId == container.Id);
+                string placeString = String.Empty;
+                if (place != null)
+                {
+                    placeString = $"{place.Warehouse.Name}, место {place.Number}";
+                }
+                <tr>
+                    <td>
+                        <a asp-action="Container" asp-route-id="@container.Id">
+                            @container.Number
+                        </a>
+                    </td>
+                    <td>
+                        @placeString
+                    </td>
+                    <td>
+                        @container.TypeAsString
+                    </td>
+                    <td>
+                        @container.Weight
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+    $(document).ready(function () {
+            setInterval(function () {
+                cache_clear()
+            }, 1000);
+        });
+
+        function cache_clear() {
+            window.location.reload(true);
+        }
+    </script>
+}

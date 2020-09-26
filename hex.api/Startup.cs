@@ -31,7 +31,7 @@ namespace hex
 
             services.AddDbContext<HexDBContext>();
 
-            services.AddSingleton<IContainerStateService, ContainerStateService>();
+            services.AddHostedService<IContainerStateService, ContainerStateService>();
             services.AddTransient<IWarehouseService, WarehouseService>();
             services.AddTransient<IChannelWriterService<CTrack, string>, ChannelWriterService<CTrack, string>>();
             services.AddSingleton<IChannelResolver<CTrack, string>, ChannelResolver<CTrack, string>>();
@@ -54,7 +54,6 @@ namespace hex
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

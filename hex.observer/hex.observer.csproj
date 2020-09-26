@@ -5,4 +5,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HashtagChris.DotNetBlueZ" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\hex.observer.common\hex.observer.common.csproj" />
+  </ItemGroup>
+
 </Project>

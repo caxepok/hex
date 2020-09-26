@@ -34,9 +34,9 @@ namespace hex.api.Models
         /// <summary>
         /// Дата когда контейнер пропал со склада
         /// </summary>
-        public DateTimeOffset Finish { get; set; }
+        public DateTimeOffset? Finish { get; set; }
 
         public virtual Container Container { get; set; }
-        public virtual Container Warehouse { get; set; }
+        public virtual Warehouse Warehouse { get; set; }
     }
 }

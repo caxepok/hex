@@ -1,32 +1,81 @@
 ﻿@{
-    ViewData["Title"] = "Пакован";
+    ViewData["Title"] = "ПАК Логист";
 }
 
 <div class="text-center">
-        @foreach (hex.api.Models.Warehouse wh in ViewBag.Warehouses)
-        {
+    @foreach (hex.api.Models.Warehouse wh in ViewBag.Warehouses)
+    {
         <div>
-            <p>@wh.Name</p>
+            <h4>@wh.Name</h4>
+            @if (wh.IsOpenSky)
+            {
+                <p>Склад под открытым небом</p>
+            }
             <div class="d-flex justify-content-between">
                 @for (int i = 0; i < 10; i++)
                 {
-                    hex.api.Models.ContainerPlace cp = (ViewBag.ContainerPlaces as IEnumerable<hex.api.Models.ContainerPlace>).SingleOrDefault(_ => _.Warehouse.Id == wh.Id && _.Number == i);
+                    @* First or default - нет логики, проверяющей что на одном месте один контейнер :) *@
+                    hex.api.Models.ContainerPlace cp = (ViewBag.ContainerPlaces as IEnumerable<hex.api.Models.ContainerPlace>).FirstOrDefault(_ => _.Warehouse.Id == wh.Id && _.Number == i);
                     if (cp == null)
                     {
-                        <div style="margin:10px;height:40px;width:40px;background-color:lightgray;border-radius:3px"></div>
+                        <div class="border" style="margin:10px;height:55px;width:55px;border-radius:3px"></div>
                     }
                     else
                     {
-                        <div style="margin:10px;height:40px;width:40px;background-color:forestgreen;border-radius:3px"></div>
+                        if (DateTimeOffset.Now.Subtract(cp.DateFrom).TotalMinutes > 5)
+                        {
+                            <a asp-action="Container" asp-route-id="@cp.ContainerId"><div class="border border-danger" style="margin:10px;height:55px;width:55px;background-color:@cp.Container.ContentColor;border-radius:3px;color:white">@cp.Container.Number</div></a>
+                        }
+                        else
+                        {
+                            <a asp-action="Container" asp-route-id="@cp.ContainerId"><div style="margin:10px;height:55px;width:55px;background-color:@cp.Container.ContentColor;border-radius:3px;color:white">@cp.Container.Number</div></a>
+                        }
                     }
                 }
             </div>
         </div>
-        }
+    }
     <div>
-        <p>Весы</p>
+        <h4>Весы</h4>
         <div>
-            <div style="margin:10px;height:40px;width:40px;background-color:lightgray;border-radius:3px" />
+            <div style="margin:10px;height:40px;width:40px;background-color:wheat;border-radius:3px" />
         </div>
     </div>
-</div>
+    <div>
+        <p  class="text-left">Легенда</p>
+        <div class="row">
+            <div style="margin:10px;height:20px;width:20px;border-radius:3px;background-color:lightgray"></div>
+            <div class="text-sm-left">Пустой</div>
+        </div>
+        <div class="row">
+            <div style="margin:10px;height:20px;width:20px;border-radius:3px;background-color:wheat"></div>
+            <div class="text-sm-left">Готов к наполнению</div>
+        </div>
+        <div class="row">
+            <div style="margin:10px;height:20px;width:20px;border-radius:3px;background-color:gray"></div>
+            <div class="text-sm-left">Заполнен и готов к транспортировке</div>
+        </div>
+        <div class="row">
+            <div style="margin:10px;height:20px;width:20px;border-radius:3px;background-color:forestgreen"></div>
+            <div class="text-sm-left">Заполнен</div>
+        </div>
+        <div class="row">
+            <div class="border border-danger" style="margin:10px;height:20px;width:20px;border-radius:3px"></div>
+            <div class="text-sm-left">Превышено время нахождения на открытом складе</div>
+        </div>
+    </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setInterval(function () {
+                cache_clear()
+            }, 1000);
+        });
+
+        function cache_clear() {
+            window.location.reload(true);
+        }
+    </script>
+}

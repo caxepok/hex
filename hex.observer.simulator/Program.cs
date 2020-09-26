@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace hex.observer.simulator
 {
     /// <summary>
-    /// Приложение для Raspberry PI для отслеживания контейнеров (симулятор)
+    /// Приложение для отслеживания контейнеров (симулятор)
     /// </summary>
     class Program
     {
@@ -40,18 +40,21 @@ namespace hex.observer.simulator
         {
             CTrackWriter.Connect("CTrackWriter", ct);
 
+            Random random = new Random();
             while (!ct.IsCancellationRequested)
             {
+                var now = DateTimeOffset.Now;
                 try
                 {
-                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "00001", RSSI = 60, Timestamp = DateTimeOffset.Now });
-                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "00002", RSSI = 60, Timestamp = DateTimeOffset.Now });
+                    int rssi = random.Next(0, 101);
+                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "F31E81F7-BC52-4777-A4BE-9EEF6EAC306A", RSSI = rssi, Timestamp = now });
+                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "11218E35-044D-4556-9456-E5780CDF9B68", RSSI = 80, Timestamp = now });
                 }
                 catch (Exception ex)
                 {
 
                 }
-                await Task.Delay(10000);
+                await Task.Delay(5000);
             }
         }
     }

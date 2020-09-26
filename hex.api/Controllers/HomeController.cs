@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace hex.api.Controllers
 {
+    /// <summary>
+    /// Основной контроллер интерфейса
+    /// </summary>
+    [Route("home")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,11 +27,32 @@ namespace hex.api.Controllers
             _containerStateService = containerStateService;
         }
 
+        [HttpGet("")]
         public IActionResult Index()
         {
-            ViewBag.ContainerPlaces = _warehouseService.GetActiveContainerPlacesAsync().ToList();
-            ViewBag.Warehouses = _warehouseService.GetWarehouses().ToList();
-            ViewBag.ContainerStates = _containerStateService.GetAll().ToList();
+            ViewBag.ContainerPlaces = _warehouseService.GetActiveContainerPlacesAsync();
+            ViewBag.Warehouses = _warehouseService.GetWarehouses();
+            ViewBag.ContainerStates = _containerStateService.GetAll();
+
+            return View();
+        }
+
+        [HttpGet("container")]
+        public IActionResult Containers()
+        {
+            ViewBag.Containers = _warehouseService.GetContainers();
+            ViewBag.ContainerStates = _containerStateService.GetAll();
+            ViewBag.ContainerPlaces = _warehouseService.GetActiveContainerPlacesAsync();
+            ViewBag.Warehouses = _warehouseService.GetWarehouses();
+
+            return View();
+        }
+
+        [HttpGet("container/{id}")]
+        public IActionResult Container(long id)
+        {
+            ViewBag.Container = _warehouseService.GetContainer(id);
+            ViewBag.Places = _warehouseService.GetContainerPlacesHistory(id);
 
             return View();
         }

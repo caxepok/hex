@@ -1,4 +1,5 @@
 ﻿using hex.api.Enums;
+using System;
 
 namespace hex.api.Models
 {
@@ -36,5 +37,77 @@ namespace hex.api.Models
         /// Признак наличия канбана
         /// </summary>
         public bool Kanban { get; set; }
+        /// <summary>
+        /// Данные маячка
+        /// </summary>
+
+        public virtual Beacon Beacon {get;set;}
+
+        /// <summary>
+        /// Текущее содержимое контейнера (цвет)
+        /// </summary>
+        public string ContentColor
+        { 
+            get
+            {
+                switch(Content)
+                {
+                    case ContainerContent.Empty:
+                        return "white";
+                    case ContainerContent.Filled:
+                        return "forestgreen";
+                    case ContainerContent.ReadyAndWeighted:
+                        return "gray";
+                    case ContainerContent.ReadyToFill:
+                        return "wheat";
+                    case ContainerContent.Reserved:
+                        return "lightgray";
+                    default:
+                        throw new ArgumentOutOfRangeException("Unknown container content");
+                }
+            }
+        }        /// <summary>
+        /// Текущее содержимое контейнера (в виде строки)
+        /// </summary>
+        public string ContentAsString 
+        { 
+            get
+            {
+                switch(Content)
+                {
+                    case ContainerContent.Empty:
+                        return "Пустой";
+                    case ContainerContent.Filled:
+                        return "Заполнен";
+                    case ContainerContent.ReadyAndWeighted:
+                        return "Готов и взвешен";
+                    case ContainerContent.ReadyToFill:
+                        return "Готов к заполнению";
+                    case ContainerContent.Reserved:
+                        return "Резерв";
+                    default:
+                        throw new ArgumentOutOfRangeException("Unknown container content");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Тип контейнера (в виде строки)
+        /// </summary>
+        public string TypeAsString
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case ContainerType.Basic:
+                        return "Универсальный";
+                    case ContainerType.Liquid:
+                        return "Жидкости";
+                    default:
+                        throw new ArgumentOutOfRangeException("Unknown container type");
+                }
+            }
+        }
     }
 }

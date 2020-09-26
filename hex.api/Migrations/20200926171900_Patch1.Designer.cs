@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using hex.api.Repositories;
@@ -9,9 +10,10 @@ using hex.api.Repositories;
 namespace hex.api.Migrations
 {
     [DbContext(typeof(HexDBContext))]
-    partial class HexDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200926171900_Patch1")]
+    partial class Patch1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +85,7 @@ namespace hex.api.Migrations
                     b.Property<DateTimeOffset>("DateFrom")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("Finish")
+                    b.Property<DateTimeOffset>("Finish")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("LastDetected")
@@ -159,9 +161,6 @@ namespace hex.api.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("IsOpenSky")
-                        .HasColumnType("boolean");
-
                     b.Property<double>("Lat")
                         .HasColumnType("double precision");
 
@@ -170,9 +169,6 @@ namespace hex.api.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<int>("PlaceCount")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

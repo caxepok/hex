@@ -1,15 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace hex.common.Models
 {
     /// <summary>
-    /// Данные телеметрии самого наблюдателя
+    /// Данные телеметрии устройства, собирающего телеметрию наблюдателя
     /// </summary>
     public class OTrack
     {
+        /// <summary>
+        /// Дата события
+        /// </summary>
         public DateTimeOffset Timestamp { get; set; }
-        public string SoftwareVersion { get; set; }  
+        /// <summary>
+        /// Версия прошивки устройства
+        /// </summary>
+        public string SoftwareVersion { get; set; }
     }
 }
