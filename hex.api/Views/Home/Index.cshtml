@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Пакован";
+}
+
+<div class="text-center">
+        @foreach (hex.api.Models.Warehouse wh in ViewBag.Warehouses)
+        {
+        <div>
+            <p>@wh.Name</p>
+            <div class="d-flex justify-content-between">
+                @for (int i = 0; i < 10; i++)
+                {
+                    hex.api.Models.ContainerPlace cp = (ViewBag.ContainerPlaces as IEnumerable<hex.api.Models.ContainerPlace>).SingleOrDefault(_ => _.Warehouse.Id == wh.Id && _.Number == i);
+                    if (cp == null)
+                    {
+                        <div style="margin:10px;height:40px;width:40px;background-color:lightgray;border-radius:3px"></div>
+                    }
+                    else
+                    {
+                        <div style="margin:10px;height:40px;width:40px;background-color:forestgreen;border-radius:3px"></div>
+                    }
+                }
+            </div>
+        </div>
+        }
+    <div>
+        <p>Весы</p>
+        <div>
+            <div style="margin:10px;height:40px;width:40px;background-color:lightgray;border-radius:3px" />
+        </div>
+    </div>
+</div>
