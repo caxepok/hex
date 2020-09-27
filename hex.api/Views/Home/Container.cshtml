@@ -21,6 +21,7 @@
     <div>Текущее местоположение: <b>@currentPlaceString</b></div>
     <div>Текущее содержимое: <b>@container.ContentAsString</b></div>
     <div>Текущий вес: <b>@container.Weight</b></div>
+    <div>Описание: <b>@container.Description</b></div>
     @if (currentPlace.Warehouse.IsOpenSky)
     {
         <div><b>Время нахождения под открытым воздухом: @DateTimeOffset.Now.Subtract(currentPlace.DateFrom).ToString("d\\.hh\\:mm\\:ss")</b></div>
