@@ -38,6 +38,26 @@
 - В случае использования Bluetooth LE Beacon`ов приложение шлёт данные уровня сигнала до маячка.
 При большом количестве устройство обнаружения на территории склада возможно использование триангуляции по уровням сигнала
 Это обеспечит точное определение позиции контейнера на площадке
+
+Настройка Raspberry Pi для запуска:
+
+1. Обновиться
+```
+sudo aupt update && sudo apt upgrade
+```
+2. Установка .NET Core
+
+.net core https://dotnet.microsoft.com/download
+для ARM64 https://docs.microsoft.com/ru-ru/dotnet/core/install/sdk?pivots=os-linux#download-and-manually-install
+
+3. Установка bluetooth стека и нужных библотек
+
+```
+sudo apt install pi-bluetooth
+sudo apt install bluetooth bluez bluez-tools rfkill
+sudo systemctl start bluetooth
+sudo systemctl enable bluetooth
+```
  
 ## hex.observer.common
 Общие компоненты приложения устройства обнаружения
