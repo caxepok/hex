@@ -30,7 +30,7 @@ namespace hex.observer
             string serialNumber = args.Length > 0 ? args[0] : "observer2";
 
             // CTrackWriter - отправляет по SignalR пакеты телеметрии на сервер
-            CTrackWriter = new CTrackWriter(_loggerFactory.CreateLogger<CTrackWriter>(), serialNumber, "http://localhost:5000/hub/observer");
+            CTrackWriter = new CTrackWriter(serialNumber, "http://localhost:5000/hub/observer");
 
             RaspberryBTScanner scanner = new RaspberryBTScanner(CTrackWriter, serialNumber);
             Task.Run(() => scanner.StartScan(cts.Token));

@@ -20,12 +20,10 @@ namespace hex.observer.common
         private static readonly SignalRRetryPolicy _signalRRetryPolicy = new SignalRRetryPolicy();
         private readonly Channel<T> _channel = Channel.CreateUnbounded<T>();
         private readonly string _observerSerialNumber;
-        protected ILogger _logger;
         protected abstract string EndPoint { get; }
 
-        public SignalRWriter(ILogger<SignalRWriter<T>> logger, string observerSerialNumber)
+        public SignalRWriter(string observerSerialNumber)
         {
-            _logger = logger;
             _observerSerialNumber = observerSerialNumber;
         }
 
@@ -58,7 +56,6 @@ namespace hex.observer.common
                 {
                     // first connect
                     await connection.StartAsync(ct);
-                    _logger.LogTrace("Connected, endpoint: {endPoint}", endPoint);
                     // start streaming
                     while (!ct.IsCancellationRequested)
                     {
@@ -79,7 +76,6 @@ namespace hex.observer.common
                         catch (Exception ex)
                         {
                             TimeSpan tsRetry = _signalRRetryPolicy.NextRetryDelay();
-                            _logger.LogWarning(ex, "Failed to process signalr connection\\message, endpoint: {endPoint}, retry after: {retry}", endPoint, tsRetry);
                             await Task.Delay(tsRetry, ct).ContinueWith(t => { });
                         }
                     }
@@ -93,7 +89,6 @@ namespace hex.observer.common
                 catch (Exception ex)
                 {
                     TimeSpan tsRetry = _signalRRetryPolicy.NextRetryDelay();
-                    _logger.LogWarning(ex, "Initial signalr connection to endpoint: {endPoint}, retry after: {retry}", endPoint, tsRetry);
                     await Task.Delay(tsRetry, ct).ContinueWith(t => { });
                 }
             }

@@ -7,7 +7,7 @@ namespace hex.observer.common
     {
         private readonly string _endPoint;
         protected override string EndPoint => _endPoint;
-        public CTrackWriter(ILogger<CTrackWriter> logger, string serialNumber, string endPoint) : base(logger, serialNumber)
+        public CTrackWriter(string serialNumber, string endPoint) : base(serialNumber)
         {
             _endPoint = endPoint;
         }

@@ -25,10 +25,11 @@ namespace hex.observer.simulator
             sc.AddLogging(configure => configure.AddConsole());
             IServiceProvider serviceProvider = sc.BuildServiceProvider();
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            _logger = _loggerFactory.CreateLogger<Program>();
 
             string serialNumber = args.Length > 0 ? args[0] : "observer1";
 
-            CTrackWriter = new CTrackWriter(_loggerFactory.CreateLogger<CTrackWriter>(), serialNumber, "http://localhost:5000/hub/observer");
+            CTrackWriter = new CTrackWriter(serialNumber, "http://localhost:5000/hub/observer");
 
             Task.Run(() => DoWork(cts.Token));
 
@@ -46,9 +47,11 @@ namespace hex.observer.simulator
                 var now = DateTimeOffset.Now;
                 try
                 {
-                    int rssi = random.Next(0, 101);
+                    int rssi = random.Next(0, 90);
                     await CTrackWriter.SendInternal(new CTrack() { GATTid = "F31E81F7-BC52-4777-A4BE-9EEF6EAC306A", RSSI = rssi, Timestamp = now });
-                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "11218E35-044D-4556-9456-E5780CDF9B68", RSSI = 80, Timestamp = now });
+                    Console.WriteLine($"Контейнер 00001 передвинут на место {rssi.ToString()[0]}");
+                    rssi = 90;
+                    await CTrackWriter.SendInternal(new CTrack() { GATTid = "11218E35-044D-4556-9456-E5780CDF9B68", RSSI = rssi, Timestamp = now });
                 }
                 catch (Exception ex)
                 {
